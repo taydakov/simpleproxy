@@ -11,6 +11,7 @@
   {
     "redis": "0.12.1",
     "express": "~4.2.0",
-    "body-parser": "~1.0.0"
+    "body-parser": "~1.0.0",
+    "ejs": "1.0.0"
   }
 }
