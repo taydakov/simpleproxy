@@ -9,6 +9,8 @@
 
   "dependencies":
   {
-    "redis": "0.12.1"
+    "redis": "0.12.1",
+    "express": "~4.2.0",
+    "body-parser": "~1.0.0"
   }
 }

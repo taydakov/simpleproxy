@@ -3,11 +3,11 @@ var redis       = require('redis'),
 	redisClient = redis.createClient();
 
 var server = net.createServer(function(c) {
-	console.log('server connected');
+	console.log('client connected');
 	console.log(c.remoteAddress);
 	console.log(c.remotePort);
 	c.on('end', function() {
-		console.log('server disconnected');
+		console.log('client disconnected');
 	});
 
 	redisClient.get(c.remoteAddress, function(err, reply) {
@@ -23,16 +23,16 @@ var server = net.createServer(function(c) {
 
 		var client = net.connect(
 		{
-			host: "stanford.edu", 
-			port: 80
+			host: host,
+			port: port
 		}, function() {
-			console.log('client connected');
+			console.log('connected to remote');
 			
 			c.pipe(client);
 			client.pipe(c);
 		});
 		client.on('end', function() {
-			console.log('client disconnected');
+			console.log('disconnected from remote');
 		});
 	});
 });
