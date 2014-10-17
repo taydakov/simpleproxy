@@ -1,6 +1,5 @@
 var net = require('net');
-var redis       = require('redis'),
-	redisClient = redis.createClient();
+var storage = require('./inmemorystorage.js');
 
 var server = net.createServer(function(c) {
 	console.log('client connected');
@@ -10,30 +9,30 @@ var server = net.createServer(function(c) {
 		console.log('client disconnected');
 	});
 
-	redisClient.get(c.remoteAddress, function(err, reply) {
-		if (err || reply === null) return console.log(err);
-		console.log(reply);
-		if (reply.indexOf(":") === -1)
-			return console.log("Redis contains wrong data: " + reply);
+	var storedData = storage.get(c.remoteAddress)
 
-		var host = reply.substr(0, reply.indexOf(":"));
-		var port = reply.substr(reply.indexOf(":") + 1, reply.length);
+	if (!storedData) return console.log(err);
+	console.log(storedData);
+	if (storedData.indexOf(":") === -1)
+		return console.log("Redis contains wrong data: " + storedData);
 
-		console.log("host: >" + host + "<, port: >" + port + "<");
+	var host = storedData.substr(0, storedData.indexOf(":"));
+	var port = storedData.substr(storedData.indexOf(":") + 1, storedData.length);
 
-		var client = net.connect(
-		{
-			host: host,
-			port: port
-		}, function() {
-			console.log('connected to remote');
-			
-			c.pipe(client);
-			client.pipe(c);
-		});
-		client.on('end', function() {
-			console.log('disconnected from remote');
-		});
+	console.log("host: >" + host + "<, port: >" + port + "<");
+
+	var client = net.connect(
+	{
+		host: host,
+		port: port
+	}, function() {
+		console.log('connected to remote');
+		
+		c.pipe(client);
+		client.pipe(c);
+	});
+	client.on('end', function() {
+		console.log('disconnected from remote');
 	});
 });
 
