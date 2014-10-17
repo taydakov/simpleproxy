@@ -4,20 +4,27 @@ var express = require('express'),
 
 var app = express();
 
+/* view render */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+/* middleware */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 
+/* routes */
 app.use('/', require('./routes/index'));
 
+/* catch error */
 app.use(function(req, res, next) {
 	res.end(404, 'Troubles!');
 });
 
+/* web server */
 app.set('port', process.env.PORT || 3000);
-
 var server = app.listen(app.get('port'), function() {
 	console.log('server is on port ' + server.address().port);
 });
+
+/* tcp proxy itself */
+var proxy = require('./proxy.js');
