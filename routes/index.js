@@ -17,15 +17,15 @@ router.get('/', function(req, res) {
 
 		res.render('index', 
 			{ 
-				remoteip:  remoteAddress,
-				host:      host,
-				port:      port
+				clientip:   remoteAddress,
+				remotehost: host,
+				remoteport: port
 			});
 	});
 });
 router.post('/', function(req, res) {
 	console.log(req.body);
-	redisClient.set(req.body.remoteip, req.body.host + ":" + req.body.port);
+	redisClient.set(req.body.clientip, req.body.remotehost + ":" + req.body.remoteport);
 	console.log(req.connection.remoteAddress);
 	res.redirect('/');
 });
