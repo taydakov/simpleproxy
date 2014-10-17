@@ -22,8 +22,8 @@ app.use(function(req, res, next) {
 });
 
 /* web server */
-app.set('port', process.env.PORT || 3000);
-var server = app.listen(app.get('port'), function() {
+app.set('webport', process.env.WEBPORT || 3000);
+var server = app.listen(app.get('webport'), function() {
 	console.log('server is on port ' + server.address().port);
 });
 

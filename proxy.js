@@ -36,6 +36,6 @@ var server = net.createServer(function(c) {
 	});
 });
 
-server.listen(8080, function() {
-	console.log('server bound');
+server.listen(process.env.PROXYPORT || 8080, function() {
+	console.log('server bound on port ' + server.address().port);
 });
